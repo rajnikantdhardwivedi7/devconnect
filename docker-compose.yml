@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # Frontend (Next.js)
+  frontend:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=your-super-secret-jwt-key-here
+      - MONGODB_URI=mongodb://mongo:27017/devconnect
+    depends_on:
+      - mongo
+      - backend
+    networks:
+      - devconnect-network
+
+  # Backend (Socket.io Server)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=your-super-secret-jwt-key-here
+      - MONGODB_URI=mongodb://mongo:27017/devconnect
+      - CORS_ORIGIN=http://localhost:3000
+    depends_on:
+      - mongo
+    networks:
+      - devconnect-network
+
+  # MongoDB Database
+  mongo:
+    image: mongo:6.0
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password123
+      - MONGO_INITDB_DATABASE=devconnect
+    volumes:
+      - mongo_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - devconnect-network
+
+  # Redis for Socket.io scaling (optional)
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - devconnect-network
+
+volumes:
+  mongo_data:
+
+networks:
+  devconnect-network:
+    driver: bridge
