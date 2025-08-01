@@ -57,4 +57,4 @@ db.channels.insertMany([
 
 print("DevConnect database initialized successfully!")
 print("Created by: Rajnikant Dhar Dwivedi")
-print("Portfolio: https://rajnikantdhardwivedi-portfolio.netlify.app/")
+print("Portfolio: https://rajnikantdhardwivedi-mu.vercel.app/")
