@@ -184,7 +184,7 @@ export default function LandingPage() {
                 <span>Email</span>
               </Link>
               <Link
-                href="https://rajnikantdhardwivedi-portfolio.netlify.app/"
+                href="https://rajnikantdhardwivedi-mu.vercel.app/"
                 target="_blank"
                 className="flex items-center space-x-2 text-slate-300 hover:text-teal-400 transition-colors"
               >
